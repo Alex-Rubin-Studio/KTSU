@@ -189,6 +189,76 @@
         text-align: center;
         margin-bottom: 0px; /* Space below the title */
     }
+
+/* Added for the tablets, etc. */
+    @media (max-width: 599px) and (orientation: portrait) {
+        .game-title { font-size: 8vw; padding: 5pt; }
+        .bigTable { width: 95vw; max-width: none; aspect-ratio: 1 / 1; }
+        .masterTable { width: 98%; max-width: none; }
+        .masterTable td { height: 14vw; font-size: 6vw; border-radius: 50%; padding: 3px; }
+        .grouped-cell { font-size: 7vw; padding: 3px; }
+        .grouped-cell img { 
+            height: auto; width: 70%; max-height: auto; max-width: 70%;
+        }
+        button { font-size: 1.2em; padding: 8px 8px; border-width: 8px; border-radius: 20px; }
+        #buttonContainer {
+            flex-direction: column; /* Stack buttons vertically on very small screens */
+            gap: 5px;
+        }
+        #buttonContainer button { /* All buttons will now respond to this */
+            width: 80%; /* Make buttons wider when stacked */
+            margin: 5px auto; /* Center them */
+        }
+    }
+
+    /* Mobile Landscape (600px to 991px wide - larger phones, small tablets in landscape) */
+    @media (min-width: 600px) and (max-width: 991px) and (orientation: landscape) {
+        body { padding: 0.5rem; justify-content: flex-start; }
+        .game-title { font-size: 7vh; padding: 5pt; }
+        .bigTable { height: 90vh; width: auto; max-width: none; max-height: 600px; }
+        .masterTable { height: 95%; width: 98%; max-width: none; margin: 0 auto -1%;}
+        .masterTable td { height: 11vh; font-size: 5vh; border-radius: 50%; padding: 4px; }
+        .grouped-cell { font-size: 6vh; padding: 4px; }
+        .grouped-cell img { 
+            height: auto; width: 70%; max-height: auto; max-width: 70%;
+        }
+        button { font-size: 1.2em; padding: 8px 8px; border-width: 8px; border-radius: 20px; }
+        #buttonContainer {
+            gap: 8px; /* Slightly less gap for landscape */
+        }
+    }
+
+    /* Tablet Portrait (768px to 1024px wide) */
+    @media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+        .game-title { font-size: 7vw; }
+        .bigTable { width: 85vw; max-width: 768px; height: auto; }
+        .masterTable td { height: 12vw; font-size: 6vw; padding: 5px; }
+        .grouped-cell { font-size: 7vw; padding: 5px; }
+        .grouped-cell img { 
+            height: auto; width: 70%; max-height: auto; max-width: 70%; 
+        }
+        #buttonContainer {
+            gap: 10px; /* More space for tablets */
+        }
+    }
+
+    /* Tablet Landscape (1025px to 1366px wide, including your 1340x800) */
+    @media (min-width: 1025px) and (max-width: 1366px) and (orientation: landscape) {
+        body { padding: 0.5rem; justify-content: center; }
+        .game-title { font-size: 6vh; padding: 5pt; }
+        .bigTable { height: 90vh; width: auto; max-height: 750px; max-width: 1300px; }
+        .masterTable { height: 95%; width: 98%; max-width: none; }
+        .masterTable td { height: 11vh; font-size: 5vh; border-radius: 35px; padding: 5px; }
+        .grouped-cell { font-size: 6vh; padding: 5px; }
+        .grouped-cell img { 
+            height: 20vh; width: 20vh; max-height: 20vh; max-width: 20vh; 
+        }
+        button { font-size: 1.3em; padding: 10px 15px; }
+        #buttonContainer {
+            gap: 20px; /* Even more space for landscape tablets */
+        }
+    }
+    
 </style>
     
 <body>
