@@ -245,7 +245,7 @@
      * It resets the game state, shuffles the letters, and sets up the first round.
      */
     function initializeGame() {
-        gameTitle.textContent = "Find the ABCs!"; // Reset title
+        gameTitle.innerHTML = "<p>Find the ABCs!</p>"; // Reset title
         correctlyGuessedLetters.clear(); // Clear all previously guessed letters
         isGameActive = true; // Set game to active
         newGameButton.disabled = false; // Ensure the new game button is enabled
