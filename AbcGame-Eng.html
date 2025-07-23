@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>ABC - Eng</title>
+<title>Portrait Big Table</title>
 <style>
   html, body {
     height: 100%;
@@ -20,7 +20,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    align-items: space-between;
     transition: width 0.3s, height 0.3s;
   }
     .header-container { 
@@ -28,10 +28,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
-    border: 0px solid black;
+    border: 1px solid black;
   }    
-    .game-title { width:98%; border: 0px solid black; font-family: 'Times'; color: blue; font-weight: bold; font-size:clamp(2rem, 8vw, 5rem); line-height: 0; text-align:center; margin: 1% auto;}
-    .button-container { width:98%; border: 0px solid black; margin:0 auto 1%; display: flex; flex-direction: row; justify-content: space-around;}
+    .game-title { width:98%; border: 1px solid black; font-family: 'Times'; color: blue; font-weight: bold; font-size:clamp(2rem, 8vw, 5rem); line-height: 0; text-align: center; margin: 1% auto;}
+    .button-container { width:98%; border: 1px solid black; margin:0 auto 1%; display: flex; flex-direction: row; justify-content: space-around;}
     .button-container button { width:25%; font-size:clamp(.1rem, 5vw, 2rem); font-family:'Times'; font-weight: 1000; color: #01056e; padding: 1% 0; border: 7px outset; border-radius: 25%; border-color: grey; cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 5px 10px #00000033; margin: 0; outline: none; }
     .button-container a { text-decoration: none;  color: #01056e}
     .full-screen-button { background-color:#c2b3ee }
@@ -72,14 +72,14 @@
     }
 
         /* Styling for correctly guessed cells (light green) */
-    .master-table td.correct {
+    .masterTable td.correct {
         background-color: #9ae6b4; /* Light green */
         pointer-events: none; /* Disable further clicks on correct cells */
         cursor: default;
     }
 
     /* Styling for incorrectly guessed cells (red) */
-    .master-table td.incorrect {
+    .masterTable td.incorrect {
         background-color: #fc8181; /* Red */
         animation: shake 0.5s ease-out;
     }
@@ -108,41 +108,41 @@
     </div>
     <div><table class="master-table" id="masterTable">
         <tr>
-                <td id="cell-0">A</td>
-                <td id="cell-1">B</td>
+                <td id="cell-0">11</td>
+                <td id="cell-1">12</td>
                 <td class="grouped-cell" id="groupedCell" colspan="2" rowspan="2"><img id="targetImage" src="3D.png" alt="Target Image"></td>
-                <td id="cell-2">C</td>
-                <td id="cell-3">D</td>
+                <td id="cell-2">15</td>
+                <td id="cell-3">16</td>
             </tr>
             <tr>
-                <td id="cell-4">E</td>
-                <td id="cell-5">F</td>
-                <td id="cell-6">G</td>
-                <td id="cell-7">H</td>
+                <td id="cell-4">21</td>
+                <td id="cell-5">22</td>
+                <td id="cell-6">25</td>
+                <td id="cell-7">26</td>
             </tr>
             <tr>
-                <td id="cell-8">I</td>
-                <td id="cell-9">J</td>
-                <td id="cell-10">K</td>
-                <td id="cell-11">L</td>
-                <td id="cell-12">M</td>
-                <td id="cell-13">N</td>
+                <td id="cell-8">31</td>
+                <td id="cell-9">32</td>
+                <td id="cell-10">33</td>
+                <td id="cell-11">34</td>
+                <td id="cell-12">35</td>
+                <td id="cell-13">36</td>
             </tr>
             <tr>
-                <td id="cell-14">O</td>
-                <td id="cell-15">P</td>
-                <td id="cell-16">Q</td>
-                <td id="cell-17">R</td>
-                <td id="cell-18">S</td>
-                <td id="cell-19">T</td>
+                <td id="cell-14">41</td>
+                <td id="cell-15">42</td>
+                <td id="cell-16">43</td>
+                <td id="cell-17">44</td>
+                <td id="cell-18">45</td>
+                <td id="cell-19">46</td>
             </tr>
             <tr>
-                <td id="cell-20">U</td>
-                <td id="cell-21">V</td>
-                <td id="cell-22">W</td>
-                <td id="cell-23">X</td>
-                <td id="cell-24">Y</td>
-                <td id="cell-25">Z</td>
+                <td id="cell-20">51</td>
+                <td id="cell-21">52</td>
+                <td id="cell-22">53</td>
+                <td id="cell-23">54</td>
+                <td id="cell-24">55</td>
+                <td id="cell-25">56</td>
             </tr>
         </table></div>
 </div>
