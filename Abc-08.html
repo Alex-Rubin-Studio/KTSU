@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Abc-08</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link type="text/css" rel="stylesheet" href="resources/sheet.css" >
+
+<style type="text/css">
+    .big-table { border: 10pt outset orange; 
+                min-width:360px; max-width:2160px;
+                margin: 0 auto;
+                background-color: #979ef1}
+    .waffle { width: 100%; aspect-ratio: 1 / 1.45;
+             border: 3pt solid #76390c;
+             background-color:#ffdcb1;
+             padding: 1%;
+             text-align:center;color:#000000;font-family:Times; font-size:36pt; font-weight: 800; line-height: 0; vertical-align:center; white-space:nowrap;direction:ltr;
+             }
+    .game-title { height: 12.5%; border:none; font-size:clamp(36pt, 12vw, 120pt); color: blue; line-height: 1.1; }
+    .button-container { height: 12.5%; border: 0px solid black; }
+    .button-container button { width: 75%; border: 7px outset; border-radius: 15%; border-color: grey; /*cursor: pointer; transition: background-color 0.3s ease, transform 0.2s ease;*/ box-shadow: 0 5px 10px #00000033; margin: 0; outline: none; font-family:Verdana; font-size:3.5vw; font-weight: 800; text-decoration: none; }
+    #fullScreen { background-color: #f1a697; }
+    #newGame { background-color: #b6f197; }
+    #gameOver { background-color: #a097f1; }
+    .s2 { width: calc(100% / 6); border:4px solid grey; border-radius: 25%; background-color:white;  line-height: 1.1;} 
+    
+</style>
+<body>
+<div class="big-table grid-container" dir="ltr">
+    <table class="waffle" cellspacing="5">
+        <tbody>
+        <tr style="height: 50px">
+            <td class="game-title" colspan="6">Find the ABCs!</td>
+        </tr>
+            <tr>
+                <td class="button-container" colspan="2"><button id="fullScreen">FULL<br>SCREEN</button></td>
+                <td class="button-container" colspan="2"><button id="newGame">NEW<br>GAME</button></td>
+                <td class="button-container" colspan="2"><button id="gameOver">GAME<br>OVER</button></td>
+            </tr>
+            <tr style="height: 15%">
+                <td class="s2">A</td>
+                <td class="s2">B</td>
+                <td class="s2" colspan="2" rowspan="2"></td>
+                <td class="s2">C</td>
+                <td class="s2">D</td>
+            </tr>
+            <tr style="height: 15%">
+                <td class="s2">E</td>
+                <td class="s2">F</td>
+                <td class="s2">G</td>
+                <td class="s2">H</td></tr>
+            <tr style="height: 15%">
+                <td class="s2">I</td>
+                <td class="s2">J</td>
+                <td class="s2">K</td>
+                <td class="s2">L</td>
+                <td class="s2">M</td>
+                <td class="s2">N</td>
+            </tr>
+            <tr style="height: 15%">
+                <td class="s2">O</td>
+                <td class="s2">P</td>
+                <td class="s2">Q</td>
+                <td class="s2">R</td>
+                <td class="s2">S</td>
+                <td class="s2">T</td>
+            </tr>
+            <tr style="height: 15%">
+                <td class="s2">U</td>
+                <td class="s2">V</td>
+                <td class="s2">W</td>
+                <td class="s2">X</td>
+                <td class="s2">Y</td>
+                <td class="s2">Z</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
