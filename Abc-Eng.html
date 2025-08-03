@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Abc-010</title>
+<title>Abc-Eng</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link type="text/css" rel="stylesheet" href="resources/sheet.css" >
 
 <style type="text/css">
@@ -150,16 +150,6 @@
     }
     window.addEventListener('resize', resizeBigTable);
     window.addEventListener('DOMContentLoaded', resizeBigTable);
-
-    document.getElementById('fullScreenButton').addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch(err => {
-        alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-      });
-    } else {
-      document.exitFullscreen();
-    }
-  });
     
     // This array serves as your "DataBase table" (invisible).
     // Each object contains the letter, a descriptive word, and the correct local image path.
