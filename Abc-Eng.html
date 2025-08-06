@@ -5,33 +5,109 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"><link type="text/css" rel="stylesheet" href="resources/sheet.css" >
 
 <style type="text/css">
-    html, body {
+html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background: blue;
+    background: #0200b4;
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-    .big-table { 
-        box-sizing: border-box;
-        aspect-ratio: 1 / 1.45;
-        border: 10pt outset orange;
-        margin: 0 auto;
-        background-color: #e4e9ff;
-        text-align:center;
-        color:#000000;font-family:Times; font-size:5vw; font-weight: 800; line-height: 0; vertical-align:center; white-space:nowrap;direction:ltr;
-    }
-    .game-title { border: 0px solid black; height:20%; font-size:clamp(3.75rem, 3.75vw, 4rem); color: blue; line-height: 1.1; }
-
-    .button-container td { height:20%; border: 7px outset; border-radius: 15%; border-color: grey; box-shadow: 0 5px 10px #00000033; outline: none; padding:0; color: black; font-family:Verdana, sans-serif; font-size:clamp(1.5rem, 3vw, 2rem); font-weight: 800; line-height: 1; text-decoration: none;
 }
-    .button-container td:hover { transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);}
-    .button-container td:active { transform: translateY(0); box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2); border-style: inset; }
 
-    .master-table { height:60%; background-color: #f9f4a6; }
-    .master-table td { width: calc(100% / 6); border:4px solid grey; border-radius: 25%; background-color:white;  line-height: 1.1; font-size:clamp(1vh, 30pt, 5vh); }
+.big-table {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    aspect-ratio: 1 / 1.45;
+    border: 10pt outset orange;
+    background-color: yellow;
+    text-align: center;
+    font-family: Times;
+    font-weight: 800;
+    margin: 0 auto;
+    color: #000;
+    width: 100%;
+    max-width: 100vh;
+    height: auto;
+}
+
+/* Define proportional heights */
+.game-title {
+    flex: 0 0 20%;
+    font-size: clamp(3.75rem, 3.75vw, 4rem);
+    color: #0200b4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-container {
+    flex: 0 0 15%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 5px;
+}
+
+.button-container .button {
+    flex: 1;
+    height: 80%;
+    margin: 0 10px;
+    border: 7px outset #706f6f;
+    border-radius: 15%;
+    box-shadow: 0 5px 10px #00000033;
+    outline: none;
+    padding: 0;
+    font-family: Verdana, sans-serif;
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    line-height: 1;
+    text-decoration: none;
+    color: black;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    cursor: pointer;
+}
+
+.button-container .button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+}
+
+.button-container .button:active {
+    transform: translateY(0);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
+    border-style: inset;
+}
+
+.master-table-container {
+    flex: 1 1 65%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5rem;
+}
+
+.master-table {
+    width: 100%;
+    height: 100%;
+/*    background-color: #f9f4a6; */
+    table-layout: fixed;
+    border-collapse: separate;
+}
+
+.master-table td {
+    border: 4px solid grey;
+    border-radius: 25%;
+    background-color: white;
+    text-align: center;
+    font-size: clamp(1vh, 30pt, 5vh);
+    line-height: 1.1;
+}
 
      .master-table td:not(.grouped-cell):hover {
      transform: scale(1.03);
@@ -39,22 +115,22 @@
 
     .grouped-cell {
     position: relative;
-    overflow: hidden;
+    overflow: hidden; /* ensures the image doesn't overflow */
 }
-
-.master-table img {
-    position: absolute;
+        /* Styles for the image inside the grouped cell */
+    .master-table img {
+        position: absolute;
     width: 75%;
     height: 75%;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    object-fit: contain;
-    border-radius: 45px;
+    object-fit: contain; /* ensures aspect ratio is preserved */
+    border-radius: 45px; /* optional, keep if you want rounded corners */
     display: block;
     max-width: 100%;
     max-height: 100%;
-}
+    }
 
     /* Styling for correctly guessed cells (light green) */
     .master-table td.correct {
@@ -81,55 +157,61 @@
     
 </style>
 <body>
-    <table class="big-table" id="bigTable" cellspacing="5">
+  <div class="big-table" id="bigTable">
+    <div class="game-title" id="gameTitle">Find the ABCs!</div>
 
+    <div class="button-container">
+      <div class="button full-screen-button" id="fullScreenButton" style="background-color: #a9a6f9">FULL<br>SCREEN</div>
+      <div class="button new-game-button" id="newGameButton" style="background-color: #b6f197">NEW<br>GAME</div>
+      <div class="button game-over-button" id="gameOverButton" style="background-color: #f1a697">
+        <a href="Choice.html">GAME<br>OVER</a>
+      </div>
+    </div>
+
+    <div class="master-table-container">
+      <table class="master-table" id="masterTable" cellspacing="5">
         <tr>
-            <td class="game-title" id="gameTitle" colspan="6">Find the ABCs!</td>
+          <td class="s2" id="cell-0">A</td>
+          <td class="s2" id="cell-1">B</td>
+          <td class="grouped-cell" id="groupedCell" colspan="2" rowspan="2">
+            <img id="targetImage" src="3D.png" alt="Target Image">
+          </td>
+          <td class="s2" id="cell-2">C</td>
+          <td class="s2" id="cell-3">D</td>
         </tr>
-            <tr class="button-container">
-<td class="full-screen-button" id="fullScreenButton" colspan="2" style="background-color: #a9a6f9">FULL<br>SCREEN</td>
-<td class="new-game-button" id="newGameButton" colspan="2"  style="background-color: #b6f197">NEW<br>GAME</td>
-<td class="game-over-button" id="gameOverButton" colspan="2" style="background-color: #f1a697"><a href="Choice.html">GAME<br>OVER</a></td>
-            </tr>
-        <tbody class="master-table" id="masterTable">
-            <tr>
-                <td class="s2" id="cell-0">A</td>
-                <td class="s2" id="cell-1">B</td>
-                <td class="grouped-cell" id="groupedCell" colspan="2" rowspan="2"><img id="targetImage" src="3D.png" alt="Target Image"></td>
-                <td class="s2" id="cell-2">C</td>
-                <td class="s2" id="cell-3">D</td>
-            </tr>
-            <tr>
-                <td class="s2" id="cell-4">E</td>
-                <td class="s2" id="cell-5">F</td>
-                <td class="s2" id="cell-6">G</td>
-                <td class="s2" id="cell-7">H</td></tr>
-            <tr>
-                <td class="s2" id="cell-8">I</td>
-                <td class="s2" id="cell-9">J</td>
-                <td class="s2" id="cell-10">K</td>
-                <td class="s2" id="cell-11">L</td>
-                <td class="s2" id="cell-12">M</td>
-                <td class="s2" id="cell-13">N</td>
-            </tr>
-            <tr>
-                <td class="s2" id="cell-14">O</td>
-                <td class="s2" id="cell-15">P</td>
-                <td class="s2" id="cell-16">Q</td>
-                <td class="s2" id="cell-17">R</td>
-                <td class="s2" id="cell-18">S</td>
-                <td class="s2" id="cell-19">T</td>
-            </tr>
-            <tr>
-                <td class="s2" id="cell-20">U</td>
-                <td class="s2" id="cell-21">V</td>
-                <td class="s2" id="cell-22">W</td>
-                <td class="s2" id="cell-23">X</td>
-                <td class="s2" id="cell-24">Y</td>
-                <td class="s2" id="cell-25">Z</td>
-            </tr>
-        </tbody>
-    </table>
+        <tr>
+          <td class="s2" id="cell-4">E</td>
+          <td class="s2" id="cell-5">F</td>
+          <td class="s2" id="cell-6">G</td>
+          <td class="s2" id="cell-7">H</td>
+        </tr>
+        <tr>
+          <td class="s2" id="cell-8">I</td>
+          <td class="s2" id="cell-9">J</td>
+          <td class="s2" id="cell-10">K</td>
+          <td class="s2" id="cell-11">L</td>
+          <td class="s2" id="cell-12">M</td>
+          <td class="s2" id="cell-13">N</td>
+        </tr>
+        <tr>
+          <td class="s2" id="cell-14">O</td>
+          <td class="s2" id="cell-15">P</td>
+          <td class="s2" id="cell-16">Q</td>
+          <td class="s2" id="cell-17">R</td>
+          <td class="s2" id="cell-18">S</td>
+          <td class="s2" id="cell-19">T</td>
+        </tr>
+        <tr>
+          <td class="s2" id="cell-20">U</td>
+          <td class="s2" id="cell-21">V</td>
+          <td class="s2" id="cell-22">W</td>
+          <td class="s2" id="cell-23">X</td>
+          <td class="s2" id="cell-24">Y</td>
+          <td class="s2" id="cell-25">Z</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 
 <script>
     function resizeBigTable() {
@@ -150,7 +232,8 @@
     }
     window.addEventListener('resize', resizeBigTable);
     window.addEventListener('DOMContentLoaded', resizeBigTable);
-    
+
+
     // This array serves as your "DataBase table" (invisible).
     // Each object contains the letter, a descriptive word, and the correct local image path.
     // Ensure your 'IMAGES' sub-folder exists in the same directory as this HTML file,
