@@ -1,19 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MemGame-01</title>
+    <title>Memory Game</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link type="text/css" rel="stylesheet" href="resources/sheet.css">
-
-    <style type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            background: #7275f4;
+            background: #e1feb9;
             display: flex;
             justify-content: center;
             align-items: center;
+            font-size: calc(5vh + 1vw);
         }
 
         .big-table {
@@ -22,10 +23,11 @@
             box-sizing: border-box;
             aspect-ratio: 1 / 1.45;
             border: 10pt outset orange;
-            background-color: #a4ffeb;
+            background-color: #4983a8;
             text-align: center;
             font-family: Times;
             font-weight: 800;
+            line-height: 1;
             margin: 0 auto;
             color: #000;
             width: 100%;
@@ -33,36 +35,78 @@
             height: auto;
         }
 
-        /* Define proportional heights */
-        .game-title {
-            flex: 0 0 20%;
-            font-size: clamp(3.5rem, 4.5vw, 5rem);
-            color: #2005af;
+        .grid-container {
+            display: grid;
+            grid-template-rows: 2fr 1fr 1fr 9fr;
+            border: 5px solid lime;
+            box-sizing: border-box;
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .grid-section {
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: .8rem;
+            font-weight: bold;
+            color: #020754;
+            padding: 0rem;
+            box-sizing: border-box;
+            min-width: 0;
+            min-height: 0;
+        }
+
+        .score-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            min-width: 0;
+            min-height: 0;
+            margin: 1% 0 0 0;
+            border: 5px solid blue;
+        }
+
+        .score-container-item {
+            border: 0px solid black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+            min-width: 0;
+            min-height: 0;
+            margin: 0 7%;
         }
 
         .button-container {
-            flex: 0 0 15%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 5px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            border: 5px solid brown;
+            min-width: 0;
+            min-height: 0;
+            margin: 2% 0 0 0;
         }
 
         .button-container .button {
-            flex: 1;
-            height: 80%;
-            margin: 0 10px;
-            border: 7px outset #706f6f;
+            flex: 1 1 auto;
+            height: 96%;
+            width: 75%;
+            margin: 0 2%;
+            border: 4px outset #020754;
             border-radius: 15%;
             box-shadow: 0 5px 10px #00000033;
             outline: none;
             padding: 0;
-            font-family: Arial Narrow;
-            font-size: clamp(1rem, 3vw, 2rem);
-            font-weight: 1000;
+            font-family: Verdana, sans-serif;
+            font-size: .3rem;
+            font-weight: 800;
             line-height: 1;
             text-decoration: none;
             color: black;
@@ -74,348 +118,427 @@
             cursor: pointer;
         }
 
-        .button-container .button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .button-container .button:active {
-            transform: translateY(0);
-            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-            border-style: inset;
-        }
-
-        .master-table-container {
-            flex: 1 1 65%;
+        .instructions-text-container {
+            font-size: .5rem;
             display: flex;
-            align-items: center;
             justify-content: center;
-            border: 10px outset blue;
-            border-radius: 0px;
-            background-color: #fcf4dd;
-            padding: 0.5rem;
-            margin: 1%;
-        }
-
-        .master-table {
+            align-items: center;
+            text-align: center;
             width: 100%;
             height: 100%;
-            table-layout: fixed;
-            border-collapse: separate;
+            border: 2px solid green;
         }
 
-        .b-cell {
-            border: 4px solid grey;
+        .instructions-text-container ul {
+            margin: 0;
+            padding: 0 .5rem 0 1rem;
+            text-align: left;
+            list-style-type: disc;
+        }
+
+        .question-table-container, .answer-table-container {
+            width: 80%; /* Consistent width for both game boards */
+            aspect-ratio: 1; /* Maintain a square shape */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question-table {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 1rem;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+        }
+
+        .answer-table {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 0.5rem;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+        }
+
+        .q-cell, .a-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
             border-radius: 25%;
-            background-color: white;
-            text-align: center;
-            font-size: clamp(1vh, 30pt, 5vh);
-            line-height: 1.1;
-            transition: opacity 0.5s ease-in-out; /* Added for smooth transition */
+            font-size: .55rem;
+            width: 100%;
+            height: 100%;
+        }
+
+        .q-cell {
+            border: 8px solid orange;
+        }
+
+        .a-cell {
+            border: 6px solid orange;
+            cursor: pointer;
+        }
+
+        /* Responsive scaling for images */
+        .q-cell img, .a-cell img {
+            width: 70%;
+            height: 70%;
         }
         
-        .c-Cell-A, .c-Cell-B, .c-Cell-C, .c-Cell-D {
-            border: 4px solid #a0aec0;
-            background-color: white;
-            font-size: clamp(5vh, 60pt, 9vh);
-            vertical-align: center; text-align: center;
-            padding:0 20pt;
-            visibility: hidden;
+        .correct {
+            background-color: #92e6a9 !important; /* Green for correct answers */
         }
-        .c-Cell-A { border-radius: 50% 50% 0 50%; }
-        .c-Cell-B { border-radius: 50% 50% 50% 0; }
-        .c-Cell-C { border-radius: 0 50% 50% 50%; }
-        .c-Cell-D { border-radius: 50% 0 50% 50%; }
+
+        .incorrect {
+            background-color: #f69494 !important; /* Red for incorrect answers */
+        }
+
+        .glowing-diamond {
+            filter: drop-shadow(0 0 5px #0ff) drop-shadow(0 0 10px #0ff) drop-shadow(0 0 15px #0ff);
+        }
         
-        .b-cell:hover {
-            transform: scale(1.03);
-            background-color: yellow;
+        .hidden {
+            display: none;
         }
 
-        /* Keyframe animation for shake effect */
-        @keyframes shake {
-            0% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-            100% { transform: translateX(0); }
-        }
-
-        /* Game result animation */
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
-
-        .game-title.pop {
-            animation: pop 0.4s ease;
-        }
-
-        /* NEW: Class to hide b-cells and change timer color */
-        .hide-cells .b-cell {
-            opacity: 0;
-        }
-
-        .countdown-red {
-            color: red !important;
-        }
-
-        .countdown-green {
-            color: green !important;
-        }
     </style>
 </head>
 <body>
     <div class="big-table" id="bigTable">
-        <div class="game-title" id="gameTitle">Find the Numbers!</div>
-
-        <div class="button-container">
-            <div class="button full-screen-button" id="fullScreenButton" style="background-color: #a9a6f9">FULL<br>SCREEN</div>
-            <div class="button new-game-button" id="newGameButton" style="background-color: #b6f197">NEW<br>GAME</div>
-            <div class="button game-over-button" id="gameOverButton" style="background-color: #f1a697">
-                <a href="Choice.html">GAME<br>OVER</a>
+        <div class="grid-container">
+            <div class="grid-section game-title" style="border: 5px solid brown;">
+                CHECK YOUR<br>MEMORY!
             </div>
-        </div>
+            
+            <div class="grid-section section-2 p-0">
+                <div class="score-container">
+                    <!-- The diamond images are used here to track wins -->
+            <div class="score-container-item" id="score-item-1"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-2"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-3"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-4"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-5"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-6"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-7"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-8"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-9"><img src="Diamond.png"></div>
+            <div class="score-container-item" id="score-item-10"><img src="Diamond.png"></div>
+                </div>
+            </div>
 
-        <div class="master-table-container">
-            <table class="master-table" id="masterTable" cellspacing="5">
-                <tr>
-                    <td class="b-cell" id="cell-0">1</td>
-                    <td class="b-cell" id="cell-1">2</td>
-                    <td class="b-cell" id="cell-2">3</td>
-                    <td class="b-cell" id="cell-3">4</td>
-                    <td class="b-cell" id="cell-4">5</td>
-                    <td class="b-cell" id="cell-5">6</td>
-                </tr>
-                <tr>
-                    <td class="b-cell" id="cell-6">20</td>
-                    <td class="c-Cell-A" colspan="2" rowspan="2" id="cell-14">A</td>
-                    <td class="c-Cell-B" colspan="2" rowspan="2" id="cell-15">B</td>
-                    <td class="b-cell" id="cell-11">7</td>
-                </tr>
-                <tr>
-                    <td class="b-cell" id="cell-12">19</td>
-                    <td class="b-cell" id="cell-17">8</td>
-                </tr>
-                <tr>
-                    <td class="b-cell" id="cell-18">18</td>
-                    <td class="c-Cell-D" colspan="2" rowspan="2" id="cell-20">D</td>
-                    <td class="c-Cell-C" colspan="2" rowspan="2" id="cell-21">C</td>
-                    <td class="b-cell" id="cell-23">9</td>
-                </tr>
-                <tr>
-                    <td class="b-cell" id="cell-24">17</td>
-                    <td class="b-cell" id="cell-29">10</td>
-                </tr>
-                <tr>
-                    <td class="b-cell" id="cell-30">16</td>
-                    <td class="b-cell" id="cell-31">15</td>
-                    <td class="b-cell" id="cell-32">14</td>
-                    <td class="b-cell" id="cell-33">13</td>
-                    <td class="b-cell" id="cell-34">12</td>
-                    <td class="b-cell" id="cell-35">11</td>
-                </tr>
-            </table>
+            <div class="grid-section section-3 p-0" style="font-size: 0.5rem; line-height: 1;">
+                <div class="button-container">
+                    <div class="button full-screen-button" id="fullScreenButton" style="background-color: #a9a6f9">FULL<br>SCREEN</div>
+                    <div class="button new-game-button" id="newGameButton" style="background-color: #b6f197">NEW<br>GAME</div>
+                    <div class="button game-over-button" id="gameOverButton" style="background-color: #f1a697">GAME<br>OVER</div>
+                </div>
+            </div>
+
+            <div class="grid-section section-4" style="margin: 1.5% 0 0 0; border: 5px solid blue;">
+                <div class="instructions-text-container" id="instructions-text-container">
+                    <ul>
+                        <li>Press the "NEW GAME" button! The game will begin immediately.</li>
+                        <li>Four pictures will appear, and you'll have 4 seconds to memorize them.</li>
+                        <li>Next, you'll see a selection of pictures. Pick the original four you just saw. You have 12 seconds for this task.</li>
+                        <li>After you've made your choices, check your results. When you're ready, you can either press "NEW GAME" to play again or "GAME OVER" to finish.</li>
+                    </ul>
+                </div>
+                <div class="question-table-container hidden" id="question-table-container">
+                    <div class="question-table">
+                        <div class="q-cell" id="cell-q1"></div>
+                        <div class="q-cell" id="cell-q2"></div>
+                        <div class="q-cell" id="cell-q3"></div>
+                        <div class="q-cell" id="cell-q4"></div>
+                    </div>
+                </div>
+                <div class="answer-table-container hidden" id="answer-table-container">
+                    <div class="answer-table">
+                        <div class="a-cell" data-index="0"></div>
+                        <div class="a-cell" data-index="1"></div>
+                        <div class="a-cell" data-index="2"></div>
+                        <div class="a-cell" data-index="3"></div>
+                        <div class="a-cell" data-index="4"></div>
+                        <div class="a-cell" data-index="5"></div>
+                        <div class="a-cell" data-index="6"></div>
+                        <div class="a-cell" data-index="7"></div>
+                        <div class="a-cell" data-index="8"></div>
+                        <div class="a-cell" data-index="9"></div>
+                        <div class="a-cell" data-index="10"></div>
+                        <div class="a-cell" data-index="11"></div>
+                        <div class="a-cell" data-index="12"></div>
+                        <div class="a-cell" data-index="13"></div>
+                        <div class="a-cell" data-index="14"></div>
+                        <div class="a-cell" data-index="15"></div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <script>
-        // Make the board responsive to screen size
-        function resizeBigTable() {
-            const vw = window.innerWidth;
-            const vh = window.innerHeight;
-            const portraitRatio = 1 / 1.45;
-            const bigTable = document.querySelector('.big-table');
-            if (vw / vh < portraitRatio) {
-                bigTable.style.width = vw + 'px';
-                bigTable.style.height = (vw / portraitRatio) + 'px';
-            } else {
-                bigTable.style.height = vh + 'px';
-                bigTable.style.width = (vh * portraitRatio) + 'px';
-            }
-        }
+<script>
+(() => {
+  'use strict';
 
-        // Run on load and resize
-        window.addEventListener('resize', resizeBigTable);
-        window.addEventListener('DOMContentLoaded', () => {
-            resizeBigTable();
+  // ===== Element refs =====
+  const gameTitle = document.querySelector('.game-title');
+  const instructionsContainer = document.getElementById('instructions-text-container');
+  const questionContainer = document.getElementById('question-table-container');
+  const answerContainer = document.getElementById('answer-table-container');
+  const newGameButton = document.getElementById('newGameButton');
+  const gameOverButton = document.getElementById('gameOverButton');
+  const fullScreenButton = document.getElementById('fullScreenButton');
 
-            // FULLSCREEN BUTTON logic
-            const fullScreenButton = document.getElementById("fullScreenButton");
-            if (fullScreenButton) {
-                fullScreenButton.addEventListener('click', () => {
-                    if (!document.fullscreenEnabled) {
-                        alert("Full-screen mode is currently restricted.");
-                        return;
-                    }
-                    if (!document.fullscreenElement) {
-                        document.documentElement.requestFullscreen().catch(err => {
-                            alert("Full-screen failed.");
-                        });
-                    } else {
-                        document.exitFullscreen().catch(err => {
-                            alert("Exiting full-screen failed.");
-                        });
-                    }
-                });
-            }
+  const qCells = Array.from(document.querySelectorAll('.q-cell'));
+  const aCells = Array.from(document.querySelectorAll('.a-cell'));
+  const diamonds = Array.from({ length: 10 }, (_, i) =>
+    document.querySelector(`#score-item-${i + 1} img`)
+  );
 
-            // === NEW GAME BUTTON logic ===
-            const newGameButton = document.getElementById("newGameButton");
-            const gameTitle = document.getElementById("gameTitle");
-            const masterCells = document.querySelectorAll(".b-cell");
-            const masterTableContainer = document.querySelector('.master-table-container');
+  // ===== State =====
+  let rightImages = [];
+  let answerPool = [];
+  let playerChoices = new Set();
+  let timer = 0;
+  let timerId = null;
+  let phase = 'intro';
+  let winCount = 0;
 
-            const cCells = {
-                A: document.getElementById("cell-14"),
-                B: document.getElementById("cell-15"),
-                C: document.getElementById("cell-21"),
-                D: document.getElementById("cell-20")
-            };
+  // ===== Data =====
+  const gameData = [
+    { image: "Airplane.png", alt: "Airplane" },
+    { image: "Anchor.png", alt: "Anchor" },
+    { image: "Ball.png", alt: "Ball" },
+    { image: "Bike.png", alt: "Bike" },
+    { image: "Boat.png", alt: "Boat" },
+    { image: "Bucket.png", alt: "Bucket" },
+    { image: "Cake.png", alt: "Cake" },
+    { image: "Clock.png", alt: "Clock" },
+    { image: "Cube.png", alt: "Cube" },
+    { image: "Dino.png", alt: "Dino" },
+    { image: "Duck.png", alt: "Duck" },
+    { image: "FlashLight.png", alt: "FlashLight" },
+    { image: "Horse.png", alt: "Horse" },
+    { image: "LadyBug.png", alt: "LadyBug" },
+    { image: "Pencil.png", alt: "Pencil" },
+    { image: "Pyramid.png", alt: "Pyramid" },
+    { image: "Robot.png", alt: "Robot" },
+    { image: "Rocket.png", alt: "Rocket" },
+    { image: "SchoolBus.png", alt: "SchoolBus" },
+    { image: "Scooter.png", alt: "Scooter" },
+    { image: "Shovel.png", alt: "Shovel" },
+    { image: "Spinner.png", alt: "Spinner" },
+    { image: "TeaCup.png", alt: "TeaCup" },
+    { image: "Train.png", alt: "Train" },
+    { image: "Truck.png", alt: "Truck" },
+    { image: "TeaPot.png", alt: "TeaPot" },
+    { image: "Umbrella.png", alt: "Umbrella" }
+  ];
 
-            // Get 4 unique random numbers from 1–20
-            function getRandomUniqueNumbers(count, min, max) {
-                const numbers = new Set();
-                while (numbers.size < count) {
-                    numbers.add(Math.floor(Math.random() * (max - min + 1)) + min);
-                }
-                return Array.from(numbers);
-            }
+  // Use your own images if you have them; placeholders are safe defaults.
+  function createImageElement(name) {
+    const img = document.createElement('img');
+  img.src = name;   // load your real images (same folder as HTML)
+  img.alt = name.replace('.png', '');
+  return img;
+  }
 
-            // Handler: NEW GAME
-            let correctNumbers = [];
-            let foundNumbers = new Set();
-            let guessTimer = null;
+  // ===== Utils =====
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
-            function handleNewGame() {
-                // Reset game state
-                clearInterval(guessTimer);
-                foundNumbers.clear();
-                correctNumbers = getRandomUniqueNumbers(4, 1, 20);
+  function onlyShow(containerToShow) {
+    [instructionsContainer, questionContainer, answerContainer].forEach(el => {
+      if (el === containerToShow) el.classList.remove('hidden');
+      else el.classList.add('hidden');
+    });
+  }
 
-                // Hide b-cells and set countdown color to red
-                masterTableContainer.classList.add('hide-cells');
-                gameTitle.classList.add('countdown-red');
-                gameTitle.classList.remove('countdown-green');
+  function setTitleSeconds(n) {
+    gameTitle.textContent = `${n} seconds left`;
+  }
 
-                // Show C-cells with numbers
-                Object.values(cCells).forEach((cell, index) => {
-                    cell.textContent = correctNumbers[index];
-                    cell.style.visibility = "visible";
-                    cell.style.backgroundColor = "white";
-                });
+  function stopTimer() {
+    if (timerId) {
+      clearInterval(timerId);
+      timerId = null;
+    }
+  }
 
-                // Start 5-sec MEMORIZE countdown
-                let countdown = 5;
-                gameTitle.textContent = `Memorize: ${countdown}`;
-                const memorizeInterval = setInterval(() => {
-                    countdown--;
-                    if (countdown > 0) {
-                        gameTitle.textContent = `Memorize: ${countdown}`;
-                    } else {
-                        clearInterval(memorizeInterval);
+  function resetACells() {
+    aCells.forEach(c => c.classList.remove('correct', 'incorrect'));
+  }
 
-                        // Hide C-cells again
-                        Object.values(cCells).forEach(cell => {
-                            cell.style.visibility = "hidden";
-                        });
+  function clearQCellBackgrounds() {
+    qCells.forEach(c => c.style.backgroundColor = 'white');
+  }
 
-                        // Start 15-sec GUESS phase
-                        startGuessingPhase();
-                    }
-                }, 1000);
-            }
+  // ===== Modes =====
+  function showIntro() {
+    stopTimer();
+    phase = 'intro';
+    onlyShow(instructionsContainer);
+    // Restore the original multi-line title
+    gameTitle.innerHTML = 'CHECK YOUR<br>MEMORY!';
+  }
 
-            function startGuessingPhase() {
-                let timeLeft = 15;
-                gameTitle.textContent = `Time Left: ${timeLeft}`;
+  function startQuestionMode() {
+    // If kids already lit all diamonds, reset for a fresh cycle
+    if (winCount >= 10) {
+      diamonds.forEach(img => img.classList.remove('glowing-diamond'));
+      winCount = 0;
+    }
 
-                // Show b-cells and set countdown color to green
-                masterTableContainer.classList.remove('hide-cells');
-                gameTitle.classList.remove('countdown-red');
-                gameTitle.classList.add('countdown-green');
+    playerChoices.clear();
+    resetACells();
+    clearQCellBackgrounds();
 
-                // Allow player to click b-cells
-                masterCells.forEach(cell => {
-                    cell.style.pointerEvents = "auto";
-                    cell.style.backgroundColor = "white";
-                    cell.onclick = () => handleCellClick(cell);
-                });
+    // Build answer pool (16 unique)
+    answerPool = shuffle(gameData).slice(0, 16);
 
-                // Start countdown timer
-                guessTimer = setInterval(() => {
-                    timeLeft--;
-                    if (timeLeft > 0) {
-                        gameTitle.textContent = `Time Left: ${timeLeft}`;
-                    } else {
-                        clearInterval(guessTimer);
-                        endGame(false); // Time ran out
-                    }
-                }, 1000);
-            }
+    // Populate answer grid
+    aCells.forEach((cell, idx) => {
+      const { image } = answerPool[idx];
+      cell.innerHTML = '';
+      cell.appendChild(createImageElement(image));
+      cell.dataset.image = image;
+    });
 
-            function handleCellClick(cell) {
-                const number = parseInt(cell.textContent);
+    // Pick 4 right images from those 16
+    rightImages = shuffle(answerPool).slice(0, 4);
 
-                if (correctNumbers.includes(number)) {
-                    if (!foundNumbers.has(number)) {
-                        foundNumbers.add(number);
-                        cell.style.backgroundColor = "lightgreen";
+    // Populate question grid
+    qCells.forEach((cell, idx) => {
+      cell.innerHTML = '';
+      cell.appendChild(createImageElement(rightImages[idx].image));
+      cell.style.backgroundColor = 'white';
+    });
 
-                        // Reveal the number in the correct C-cell
-                        Object.values(cCells).forEach(cCell => {
-                            if (parseInt(cCell.textContent) === number) {
-                                cCell.style.visibility = "visible";
-                                cCell.style.backgroundColor = "lightgreen";
-                            }
-                        });
+    phase = 'question';
+    onlyShow(questionContainer);
 
-                        // Check win condition
-                        if (foundNumbers.size === 4) {
-                            clearInterval(guessTimer);
-                            endGame(true);
-                        }
-                    }
-                } else {
-                    // Wrong guess
-                    cell.style.backgroundColor = "red";
-                    setTimeout(() => {
-                        cell.style.backgroundColor = "white";
-                    }, 1000);
-                }
-            }
+    // 4-second memorize timer
+    timer = 4;
+    setTitleSeconds(timer);
+    stopTimer();
+    timerId = setInterval(() => {
+      timer--;
+      if (timer >= 0) setTitleSeconds(timer);
+      if (timer <= 0) {
+        stopTimer();
+        startAnswerMode();
+      }
+    }, 1000);
+  }
 
-            function endGame(won) {
-                masterCells.forEach(cell => {
-                    cell.onclick = null;
-                    cell.style.pointerEvents = "none";
-                });
+  function startAnswerMode() {
+    phase = 'answer';
+    onlyShow(answerContainer);
 
-                // Remove color classes from game title
-                gameTitle.classList.remove('countdown-red', 'countdown-green');
+    // 12-second answer timer
+    timer = 12;
+    setTitleSeconds(timer);
+    stopTimer();
+    timerId = setInterval(() => {
+      timer--;
+      if (timer >= 0) setTitleSeconds(timer);
+      if (timer <= 0) {
+        stopTimer();
+        startResultMode();
+      }
+    }, 1000);
+  }
 
-                if (won) {
-                    gameTitle.textContent = "You WON!!!";
-                } else {
-                    gameTitle.textContent = "You LOST!!!";
+  function startResultMode() {
+    phase = 'result';
+    onlyShow(questionContainer);
 
-                    // Reveal missing C-cells in red
-                    correctNumbers.forEach(num => {
-                        if (!foundNumbers.has(num)) {
-                            Object.values(cCells).forEach(cCell => {
-                                if (parseInt(cCell.textContent) === num) {
-                                    cCell.style.visibility = "visible";
-                                    cCell.style.backgroundColor = "red";
-                                }
-                            });
-                        }
-                    });
-                }
-            }
+    // Color q-cells: green if the correct image was chosen, else red
+    qCells.forEach((cell, idx) => {
+      const img = rightImages[idx].image;
+      cell.style.backgroundColor = playerChoices.has(img) ? '#92e6a9' : '#f69494';
+    });
 
-            newGameButton.addEventListener('click', handleNewGame);
-        });
-    </script>
+    const allCorrect = rightImages.every(r => playerChoices.has(r.image)) && playerChoices.size === 4;
+
+    if (allCorrect) {
+      winCount++;
+      if (winCount >= 10) {
+        // All ten glow + big praise
+        diamonds.forEach(img => img.classList.add('glowing-diamond'));
+        gameTitle.textContent = 'YOU ARE THE BEST!';
+      } else {
+        gameTitle.textContent = 'You WON!!!';
+        const slot = diamonds[winCount - 1];
+        if (slot) slot.classList.add('glowing-diamond');
+      }
+    } else {
+      gameTitle.textContent = 'You LOST!';
+    }
+  }
+
+  // ===== Event wiring =====
+  aCells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      if (phase !== 'answer') return;
+      const img = cell.dataset.image;
+      if (!img) return;
+      if (playerChoices.has(img)) return;
+      if (playerChoices.size >= 4) return;
+
+      const isCorrect = rightImages.some(r => r.image === img);
+      playerChoices.add(img);
+      cell.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+      if (playerChoices.size >= 4) {
+        stopTimer();
+        startResultMode();
+      }
+    });
+  });
+
+  newGameButton.addEventListener('click', startQuestionMode);
+  gameOverButton.addEventListener('click', showIntro);
+  fullScreenButton.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      document.exitFullscreen();
+    }
+  });
+
+  // ===== Your original sizing logic (kept intact) =====
+  function resizeBigTable() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const portraitRatio = 1 / 1.45;
+    const bigTable = document.querySelector('.big-table');
+    if (vw / vh < portraitRatio) {
+      bigTable.style.width = vw + 'px';
+      bigTable.style.height = (vw / portraitRatio) + 'px';
+    } else {
+      bigTable.style.height = vh + 'px';
+      bigTable.style.width = (vh * portraitRatio) + 'px';
+    }
+  }
+  window.addEventListener('resize', resizeBigTable);
+  window.addEventListener('DOMContentLoaded', () => {
+    resizeBigTable();
+    showIntro(); // Intro visible on load
+  });
+})();
+</script>
+
 </body>
 </html>
