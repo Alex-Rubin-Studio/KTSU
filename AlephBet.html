@@ -1,398 +1,440 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
+    <title>AlephBet-2.3</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AlephBet</title>
-<style>
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background: #0200b4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background: #dadaff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: calc(5vh + 1vw);
+        }
+        .big-table {
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            aspect-ratio: 1 / 1.45;
+            border: 10pt outset blue;
+            background-color: white;
+            text-align: center;
+            font-family: Times;
+            font-weight: 800;
+            line-height: 1;
+            margin: 0 auto;
+            color: #000;
+            width: 100%;
+            max-width: 100vh;
+            height: auto;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-rows: 2fr 1fr 1fr 9fr;
+            box-sizing: border-box;
+            flex: 1;
+            min-width: 0;
+            min-height: 0;
+        }
+        .grid-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .8rem;
+            font-weight: bold;
+            color: #020754;
+            padding: 0rem;
+            box-sizing: border-box;
+            min-width: 0;
+            min-height: 0;
+        }
+        .score-container {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            width: 100%;
+            height: 100%;
+            margin: 1% 0 0 0;
+        }
+        .score-container-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 7%;
+        }
+        .button-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            place-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 1%;
+            border-radius: 2%;
+            background-color: blue;
+            margin: 2% 2% 0 2%;
+        }
+        .button-container .button {
+            flex: 1 1 auto;
+            height: 96%;
+            width: 75%;
+            margin: 2%;
+            border: 4px outset white;
+            border-radius: 10%;
+            box-shadow: 0 5px 10px #00000033;
+            outline: none;
+            font-family: Courier-New, sans-serif;
+            font-size: .3rem;
+            font-weight: 800;
+            line-height: 1;
+            color: black;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+        }
+        .intro-container, .question-table-container, .answer-table-container {
+            width: 85%;
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .question-table, .answer-table {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            place-items: center;
+        }
+        .question-table {
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 5%;
+        }
+        .answer-table {
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 3%;
+        }
+        .i-cell, .q-cell, .a-cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #dadaff;
+            border-radius: 25%;
+            width: 100%;
+            height: 100%;
+        }
+        .i-cell, .q-cell {
+            border: 8px solid blue;
+        }
+        .i-cell { font-size: 6rem; }
+        .q-cell { font-size: 3rem; }
+        .a-cell { border: 6px solid blue;
+            cursor: pointer;
+            font-size: 1.5rem;
+        }
+        .i-cell img, .q-cell img, .a-cell img {
+            width: 70%;
+            height: 70%;
+            transition: opacity 0.5s ease-in-out;
+        }
+        
+#i-cell {
+    transition: opacity 0.5s ease-in-out;
 }
-
-.big-table {
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    aspect-ratio: 1 / 1.45;
-    border: 10pt outset orange;
-    background-color: #eceafe;
-    text-align: center;
-    font-family: Times;
-    font-weight: 800;
-    margin: 0 auto;
-    color: #000;
-    width: 100%;
-    max-width: 100vh;
-    height: auto;
-}
-
-/* Define proportional heights */
-.game-title {
-    flex: 0 0 20%;
-    font-size: clamp(3rem, 3.75vw, 4rem);
-    color: #0200b4;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.button-container {
-    flex: 0 0 15%;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    padding: 0 5px;
-}
-
-.button-container .button {
-    flex: 1;
-    height: 80%;
-    margin: 0 10px;
-    border: 7px outset #706f6f;
-    border-radius: 15%;
-    box-shadow: 0 5px 10px #00000033;
-    outline: none;
-    padding: 0;
-    font-family: Verdana, sans-serif;
-    font-size: clamp(1.0vh, 40pt, 3.25vh);
-    font-weight: 800;
-    line-height: 1;
-    text-decoration: none;
-    color: black;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.button-container .button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-}
-
-.button-container .button:active {
-    transform: translateY(0);
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-    border-style: inset;
-}
-
-.master-table-container {
-    flex: 1 1 65%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5rem;
-}
-
-.master-table {
-    width: 100%;
-    height: 100%;
-/*    background-color: #f9f4a6; */
-    table-layout: fixed;
-    border-collapse: separate;
-}
-
-.master-table td {
-    border: 5px solid blue;
-    border-radius: 25%;
-    background-color: white;
-    text-align: center;
-    font-size: clamp(1.25vh, 40pt, 5.5vh);
-    color: blue;
-    line-height: 1.1;
-}
-
-    .grouped-cell {
-    position: relative;
-    overflow: hidden; /* ensures the image doesn't overflow */
-    font-family: Times, narrow;
-    font-size: clamp(0.25vh, 5pt, 0.5vh);
-    }
-
-     .master-table td:not(.grouped-cell):hover {
-     transform: scale(1.03);
-    }
-   
-    button {
-        padding: 10px 10px;
-        font-family: 'Times';
-        font-size: 1.5em;
-        font-weight: bold;
-        color: darkblue;
-        border: 12px outset;
-        border-radius: 25px;
-        border-color: grey;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-        margin: 0;
-        outline: none;
-    }
-
-    .game-over-button a {
-        text-decoration: none; /* Removes the underline */
-        color: darkblue;
-    }
-
-    /* Button specific colors */
-    .full-screen-button { background-color:#c2b3ee }
-    .new-game-button { background-color:#93fcb3 }
-    .game-over-button { background-color:#fcbb93 }
-
-    /* Hover and active states for all buttons */
-    button:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
-    }
-    button:active {
-        transform: translateY(0);
-        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
-        border-style: inset; /* Added for press-down effect */
-    }
-
-    /* Styling for correctly guessed cells (light green) */
-    .master-table td.correct {
-        background-color: #9ae6b4; /* Light green */
-        pointer-events: none; /* Disable further clicks on correct cells */
-        cursor: default;
-    }
-
-    /* Styling for incorrectly guessed cells (red) */
-    .master-table td.incorrect {
-        background-color: #fc8181; /* Red */
-        animation: shake 0.5s ease-out;
-    }
-
-    /* Keyframe animation for shake effect */
-    @keyframes shake {
-        0% { transform: translateX(0); }
-        25% { transform: translateX(-5px); }
-        50% { transform: translateX(5px); }
-        75% { transform: translateX(-5px); }
-        100% { transform: translateX(0); }
-    }
-</style>
-    
+        
+        .correct { background-color: #92e6a9 !important; }
+        .incorrect { background-color: #f69494 !important; }
+        .glowing-BlueDiamond {
+            filter: drop-shadow(0 0 5px #0ff) drop-shadow(0 0 10px #0ff) drop-shadow(0 0 15px #0ff);
+        }
+        .hidden { display: none; }
+    </style>
+</head>
 <body>
-  <div class="big-table" id="bigTable">
-    <div class="game-title" id="gameTitle">Find the ABCs!</div>
-
-    <div class="button-container">
-      <div class="button full-screen-button" id="fullScreenButton" style="background-color: #a9a6f9">FULL<br>SCREEN</div>
-      <div class="button new-game-button" id="newGameButton" style="background-color: #b6f197">NEW<br>GAME</div>
-      <div class="button game-over-button" id="gameOverButton" style="background-color: #f1a697">
-        <a href="Choice.html">GAME<br>OVER</a>
-      </div>
-    </div>
-    <div class="master-table-container">
-      <table class="master-table" cellspacing="5">
-            <tr>
-                <td id="cell-0">Cell 11</td>
-                <td class="grouped-cell" colspan="3"></td>
-                <td id="cell-1">Cell 15</td>
-            </tr>
-            <tr>
-                <td id="cell-2">Cell 21</td>
-                <td id="cell-3">Cell 22</td>
-                <td id="cell-4">Cell 23</td>
-                <td id="cell-5">Cell 24</td>
-                <td id="cell-6">Cell 25</td>
-            </tr>
-            <tr>
-                <td id="cell-7">Cell 31</td>
-                <td id="cell-8">Cell 32</td>
-                <td id="cell-9">Cell 33</td>
-                <td id="cell-10">Cell 34</td>
-                <td id="cell-11">Cell 35</td>
-            </tr>
-            <tr>
-                <td id="cell-12">Cell 41</td>
-                <td id="cell-13">Cell 42</td>
-                <td id="cell-14">Cell 43</td>
-                <td id="cell-15">Cell 44</td>
-                <td id="cell-16">Cell 45</td>
-            </tr>
-            <tr>
-                <td id="cell-17">Cell 51</td>
-                <td id="cell-18">Cell 52</td>
-                <td id="cell-19">Cell 53</td>
-                <td id="cell-20">Cell 54</td>
-                <td id="cell-21">Cell 55</td>
-            </tr>
-      </table>
-    </div>
+    <div class="big-table" id="bigTable">
+        <div class="grid-container">
+            <div class="grid-section game-title" style="color: blue;">
+                CHECK YOUR<br>MEMORY!
+            </div>
+            <div class="grid-section section-2">
+                <div class="score-container">
+                    <div class="score-container-item" id="score-item-1"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-2"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-3"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-4"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-5"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-6"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-7"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-8"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-9"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-10"><img src="BlueDiamond.png"></div>
+                </div>
+            </div>
+            <div class="grid-section section-3">
+                <div class="button-container">
+                    <div class="button" id="fullScreenButton" style="background-color: #a9a6f9">FULL<br>SCREEN</div>
+                    <div class="button" id="newGameButton" style="background-color: #b6f197">NEW<br>GAME</div>
+                    <div class="button" id="gameOverButton" style="background-color: #f1a697">GAME<br>OVER</div>
+                </div>
+            </div>
+            <div class="grid-section section-4">
+                <div class="intro-container" id="intro-container">
+                    <div class="i-cell" id="i-cell">?</div>
+                </div>
+                <div class="question-table-container hidden" id="question-table-container">
+                    <div class="question-table">
+                        <div class="q-cell" id="cell-q1"></div>
+                        <div class="q-cell" id="cell-q2"></div>
+                        <div class="q-cell" id="cell-q3"></div>
+                        <div class="q-cell" id="cell-q4"></div>
+                    </div>
+                </div>
+                <div class="answer-table-container hidden" id="answer-table-container">
+  <div class="answer-table">
+    <div class="a-cell" data-index="0"></div>
+    <div class="a-cell" data-index="1"></div>
+    <div class="a-cell" data-index="2"></div>
+    <div class="a-cell" data-index="3"></div>
+    <div class="a-cell" data-index="4"></div>
+    <div class="a-cell" data-index="5"></div>
+    <div class="a-cell" data-index="6"></div>
+    <div class="a-cell" data-index="7"></div>
+    <div class="a-cell" data-index="8"></div>
+    <div class="a-cell" data-index="9"></div>
+    <div class="a-cell" data-index="10"></div>
+    <div class="a-cell" data-index="11"></div>
+    <div class="a-cell" data-index="12"></div>
+    <div class="a-cell" data-index="13"></div>
+    <div class="a-cell" data-index="14"></div>
+    <div class="a-cell" data-index="15"></div>
   </div>
+</div>
+            </div>
+        </div>
+    </div>
 
 <script>
-    function resizeBigTable() {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      const portraitRatio = 1 / 1.45;
-      const bigTable = document.querySelector('.big-table');
-      // Calculate which dimension to use so the table always fits
-      if (vw / vh < portraitRatio) {
-        // Screen is too tall, fit width
-        bigTable.style.width = vw + 'px';
-        bigTable.style.height = (vw / portraitRatio) + 'px';
-      } else {
-        // Screen is too wide, fit height
-        bigTable.style.height = vh + 'px';
-        bigTable.style.width = (vh * portraitRatio) + 'px';
-      }
+(() => {
+  'use strict';
+
+  const gameTitle = document.querySelector('.game-title');
+  const introContainer = document.getElementById('intro-container');
+  const questionContainer = document.getElementById('question-table-container');
+  const answerContainer = document.getElementById('answer-table-container');
+  const newGameButton = document.getElementById('newGameButton');
+  const gameOverButton = document.getElementById('gameOverButton');
+  const fullScreenButton = document.getElementById('fullScreenButton');
+  const introCell = document.getElementById('i-cell');
+
+  const qCells = Array.from(document.querySelectorAll('.q-cell'));
+  const aCells = Array.from(document.querySelectorAll('.a-cell'));
+  const BlueDiamonds = Array.from({ length: 10 }, (_, i) =>
+    document.querySelector(`#score-item-${i + 1} img`)
+  );
+
+  let rightLetters = [];
+  let answerPool = [];
+  let playerChoices = new Set();
+  let timer = 0;
+  let timerId = null;
+  let phase = 'intro';
+  let winCount = 0;
+
+  // ===== Game Data =====
+  const gameData = [
+    { letter: "א", word: "Aleph" }, { letter: "ב", word: "Bet" },
+    { letter: "ג", word: "Gimmel" }, { letter: "ד", word: "Dalet" },
+    { letter: "ה", word: "Hay" }, { letter: "ו", word: "Vav" },
+    { letter: "ז", word: "Zayin" }, { letter: "ח", word: "Khet" },
+    { letter: "ט", word: "Tet" }, { letter: "י", word: "Yud" },
+    { letter: "כ", word: "Khaf" }, { letter: "ל", word: "Lamed" },
+    { letter: "מ", word: "Mem" }, { letter: "נ", word: "Nun" },
+    { letter: "ס", word: "Samech" }, { letter: "ע", word: "Ayin" },
+    { letter: "פ", word: "Fay" }, { letter: "צ", word: "Tzadi" },
+    { letter: "ק", word: "Koof" }, { letter: "ר", word: "Resh" },
+    { letter: "ש", word: "Shin" }, { letter: "ת", word: "Tav" }
+  ];
+
+  // ===== Intro Slideshow =====
+  let introInterval = null;
+  let lastIntroIndex = -1;
+  const FADE_DURATION = 500;   // ms
+  const CHANGE_INTERVAL = 2000; // ms
+
+  function startIntroSlideshow() {
+    stopIntroSlideshow();
+    introCell.textContent = "?";
+    introCell.style.opacity = 1;
+
+    introInterval = setInterval(() => {
+      introCell.style.opacity = 0;
+      setTimeout(() => {
+        let randomIndex;
+        do {
+          randomIndex = Math.floor(Math.random() * gameData.length);
+        } while (randomIndex === lastIntroIndex);
+        lastIntroIndex = randomIndex;
+
+        introCell.textContent = gameData[randomIndex].letter;
+        void introCell.offsetWidth; // restart transition
+        introCell.style.opacity = 1;
+      }, FADE_DURATION);
+    }, CHANGE_INTERVAL);
+  }
+
+  function stopIntroSlideshow() {
+    if (introInterval) {
+      clearInterval(introInterval);
+      introInterval = null;
     }
-    window.addEventListener('resize', resizeBigTable);
-    window.addEventListener('DOMContentLoaded', resizeBigTable);
-    
-    // This array serves as your "DataBase table" (invisible).
-    // Each object contains the letter and a letter's name.
-const gameData = [
-    { letter: "א", word: "Aleph" },
-    { letter: "ב", word: "Bet" },
-    { letter: "ג", word: "Gimmel" },
-    { letter: "ד", word: "Dalet" },
-    { letter: "ה", word: "Hay" },
-    { letter: "ו", word: "Vav" },
-    { letter: "ז", word: "Zayin" },
-    { letter: "ח", word: "Khet" },
-    { letter: "ט", word: "Tet" },
-    { letter: "י", word: "Yud" },
-    { letter: "כ", word: "Khaf" },
-    { letter: "ל", word: "Lamed" },
-    { letter: "מ", word: "Mem" },
-    { letter: "נ", word: "Nun" },
-    { letter: "ס", word: "Samech" },
-    { letter: "ע", word: "Ayin" },
-    { letter: "פ", word: "Fay" },
-    { letter: "צ", word: "Tzadi" },
-    { letter: "ק", word: "Koof" },
-    { letter: "ר", word: "Resh" },
-    { letter: "ש", word: "Shin" },
-    { letter: "ת", word: "Tav" }
-];
+  }
 
-let currentGridLetters = []; // Letters randomly populated on the grid cells
-let foundLetters = new Set(); // Stores letters (strings) that have been correctly found
-let currentWordIndex = 0; // Tracks the index of the word currently displayed from the original gameData
+  // ===== Helpers =====
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
 
-// --- Game Initialization and Setup (Called on page load and by "NEW GAME" button) ---
-function initializeGame() {
-    const gameCells = Array.from(document.querySelectorAll('.master-table td:not(.grouped-cell)'));
-    const groupedCell = document.querySelector('.grouped-cell');
-    const gameTitle = document.getElementById('gameTitle');
+  function onlyShow(containerToShow) {
+    [introContainer, questionContainer, answerContainer].forEach(el => {
+      if (el === containerToShow) el.classList.remove('hidden');
+      else el.classList.add('hidden');
+    });
+  }
 
-    // Reset game state variables for a new round
-    foundLetters.clear();
-    currentWordIndex = 0; // Start from the beginning of the alphabetical list
+  function setTitleSeconds(n) { gameTitle.textContent = `${n} seconds left`; }
+  function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
+  function resetACells() { aCells.forEach(c => c.classList.remove('correct','incorrect')); }
+  function clearQCellBackgrounds() { qCells.forEach(c => c.style.backgroundColor = 'white'); }
 
-    // Randomly populate cells with ALL gameData letters
-    // Create a shuffled copy of gameData for grid placement
-    currentGridLetters = [...gameData].sort(() => 0.5 - Math.random());
+  // ===== Game Modes =====
+  function showIntro() {
+    stopTimer();
+    phase = 'intro';
+    onlyShow(introContainer);
+    gameTitle.innerHTML = 'CHECK YOUR<br>MEMORY!';
+    startIntroSlideshow();
+  }
 
-    // Populate cells with letters from currentGridLetters and enable them
-    gameCells.forEach((cell, index) => {
-        if (index < currentGridLetters.length) {
-            cell.textContent = currentGridLetters[index].letter;
-        } else {
-            cell.textContent = ''; // Clear any extra cells
-        }
-        cell.classList.remove('correct', 'incorrect'); // Clean state
-        cell.style.pointerEvents = 'auto'; // Enable clicks
-        cell.style.cursor = 'pointer';
-        cell.onclick = () => handleCellClick(cell); // Attach click handler
+  function startQuestionMode() {
+    stopIntroSlideshow();
+    if (winCount >= 10) { BlueDiamonds.forEach(img => img.classList.remove('glowing-BlueDiamond')); winCount = 0; }
+    playerChoices.clear();
+    resetACells();
+    clearQCellBackgrounds();
+
+    answerPool = shuffle(gameData).slice(0,16);
+    aCells.forEach((cell, idx) => {
+      const { letter } = answerPool[idx];
+      cell.textContent = letter;
+      cell.dataset.letter = letter;
     });
 
-    // Set the first target word and display its word (from the alphabetical gameData)
-    // The current target is always based on currentWordIndex in the original gameData
-    groupedCell.textContent = gameData[currentWordIndex].word;
+    rightLetters = shuffle(answerPool).slice(0,4);
+    qCells.forEach((cell, idx) => {
+      cell.textContent = rightLetters[idx].letter;
+      cell.style.backgroundColor = 'white';
+    });
 
-    // Update the game title
-    gameTitle.textContent = "Find the LETTER!";
-}
+    phase = 'question';
+    onlyShow(questionContainer);
+    timer = 4;
+    setTitleSeconds(timer);
+    stopTimer();
+    timerId = setInterval(() => {
+      timer--;
+      if (timer >= 0) setTitleSeconds(timer);
+      if (timer <= 0) { stopTimer(); startAnswerMode(); }
+    }, 1000);
+  }
 
-// --- Game Logic (Handles cell clicks) ---
-function handleCellClick(clickedCell) {
-    const clickedLetter = clickedCell.textContent;
-    const groupedCell = document.querySelector('.grouped-cell');
-    const gameTitle = document.getElementById('gameTitle');
+  function startAnswerMode() {
+    phase = 'answer';
+    onlyShow(answerContainer);
+    timer = 12;
+    setTitleSeconds(timer);
+    stopTimer();
+    timerId = setInterval(() => {
+      timer--;
+      if (timer >= 0) setTitleSeconds(timer);
+      if (timer <= 0) { stopTimer(); startResultMode(); }
+    }, 1000);
+  }
 
-    // Get the letter that is currently being sought (from the original, alphabetical gameData)
-    const targetLetter = gameData[currentWordIndex].letter;
-
-    // Scenario 1: **Already found letter** (clicking a green cell)
-    if (foundLetters.has(clickedLetter)) {
-        console.log(`Letter '${clickedLetter}' has already been found. No action.`);
-        return; // Do nothing, exit the function
-    }
-
-    // Scenario 2: **Correctly clicked the currently displayed target letter**
-    if (clickedLetter === targetLetter) {
-        clickedCell.classList.add('correct');
-        clickedCell.style.pointerEvents = 'none';
-        clickedCell.style.cursor = 'default';
-        foundLetters.add(clickedLetter); // Add the found letter to our set
-
-        // Check if all letters have been found (game won)
-        if (foundLetters.size === gameData.length) {
-            gameTitle.textContent = "YOU WON!!!";
-            document.querySelectorAll('.master-table td:not(.grouped-cell)').forEach(cell => {
-                cell.style.pointerEvents = 'none';
-                cell.style.cursor = 'default';
-            });
-            groupedCell.textContent = "Great Job!";
-        } else {
-            // Game continues: Find and display the next UNFOUND target word
-            // We advance currentWordIndex and skip any words already found
-            currentWordIndex++;
-            while (currentWordIndex < gameData.length && foundLetters.has(gameData[currentWordIndex].letter)) {
-                currentWordIndex++;
-            }
-
-            if (currentWordIndex < gameData.length) {
-                groupedCell.textContent = gameData[currentWordIndex].word; // Display next target word
-            } else {
-                // This case should ideally be caught by foundLetters.size === gameData.length
-                // but acts as a safeguard.
-                groupedCell.textContent = "Great Job!";
-            }
-        }
+  function startResultMode() {
+    phase = 'result';
+    onlyShow(questionContainer);
+    qCells.forEach((cell, idx) => {
+      const letter = rightLetters[idx].letter;
+      cell.style.backgroundColor = playerChoices.has(letter) ? '#92e6a9' : '#f69494';
+    });
+    const allCorrect = rightLetters.every(r => playerChoices.has(r.letter)) && playerChoices.size === 4;
+    if (allCorrect) {
+      winCount++;
+      if (winCount >= 10) {
+        BlueDiamonds.forEach(img => img.classList.add('glowing-BlueDiamond'));
+        gameTitle.textContent = 'YOU ARE THE BEST!';
+      } else {
+        gameTitle.textContent = 'You WON!!!';
+        const slot = BlueDiamonds[winCount - 1];
+        if (slot) slot.classList.add('glowing-BlueDiamond');
+      }
     } else {
-        // Scenario 3: **Incorrect click** (not the current target, and not already found)
-        clickedCell.classList.add('incorrect');
-        clickedCell.addEventListener('animationend', () => {
-            clickedCell.classList.remove('incorrect');
-        }, { once: true });
-        // The game continues, groupedCell display does not change
+      gameTitle.textContent = 'You LOST!';
     }
-}
+  }
 
-// --- Button Functionality ---
-document.getElementById('fullScreenButton').addEventListener('click', () => {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(err => {
-            alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
-        });
+  // ===== Answer click =====
+  aCells.forEach(cell => {
+    cell.addEventListener('click', () => {
+      if (phase !== 'answer') return;
+      const letter = cell.dataset.letter;
+      if (!letter || playerChoices.has(letter) || playerChoices.size >= 4) return;
+      const isCorrect = rightLetters.some(r => r.letter === letter);
+      playerChoices.add(letter);
+      cell.classList.add(isCorrect ? 'correct':'incorrect');
+      if (playerChoices.size >= 4) { stopTimer(); startResultMode(); }
+    });
+  });
+
+  // ===== Buttons =====
+  newGameButton.addEventListener('click', startQuestionMode);
+  gameOverButton.addEventListener('click', showIntro);
+  fullScreenButton.addEventListener('click', () => {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+    else document.exitFullscreen();
+  });
+
+  // ===== Resize =====
+  function resizeBigTable() {
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const portraitRatio = 1 / 1.45;
+    const bigTable = document.querySelector('.big-table');
+    if (vw / vh < portraitRatio) {
+      bigTable.style.width = vw + 'px';
+      bigTable.style.height = (vw / portraitRatio) + 'px';
     } else {
-        document.exitFullscreen();
+      bigTable.style.height = vh + 'px';
+      bigTable.style.width = (vh * portraitRatio) + 'px';
     }
-});
+  }
 
-// Event listener for the "NEW GAME" button
-document.getElementById('newGameButton').addEventListener('click', initializeGame);
+  window.addEventListener('resize', resizeBigTable);
+  window.addEventListener('DOMContentLoaded', () => { resizeBigTable(); showIntro(); });
 
-// --- Initial Setup on Page Load ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Immediately start a new game when the page loads
-    initializeGame();
-});
+})();
 </script>
-    
+
 </body>
 </html>
