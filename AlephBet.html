@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>AlephBet-2.3</title>
+    <title>AlephBet</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -32,10 +32,12 @@
             width: 100%;
             max-width: 100vh;
             height: auto;
+            min-height: 450px;
+            min-width: 310px;
         }
         .grid-container {
             display: grid;
-            grid-template-rows: 2fr 1fr 1fr 9fr;
+            grid-template-rows: 2fr 1fr 1.5fr 9fr;
             box-sizing: border-box;
             flex: 1;
             min-width: 0;
@@ -53,6 +55,28 @@
             min-width: 0;
             min-height: 0;
         }
+
+        /* Title container style (keeps layout) */
+        .game-title {
+            color: blue;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Actual title text (single-line, will be resized by JS) */
+        #gameTitleText {
+            white-space: nowrap;
+            display: inline-block;
+            padding: 0 3%;
+            font-weight: bold;
+            /* initial fallback size; JS will adjust to fit */
+            font-size: 2.5rem;
+            line-height: 1;
+        }
+
         .score-container {
             display: grid;
             grid-template-columns: repeat(10, 1fr);
@@ -73,28 +97,27 @@
             width: 100%;
             height: 100%;
             padding: 1%;
-            border-radius: 2%;
+            border-radius: 0%;
             background-color: blue;
             margin: 2% 2% 0 2%;
         }
         .button-container .button {
             flex: 1 1 auto;
-            height: 96%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 70%;
             width: 75%;
             margin: 2%;
-            border: 4px outset white;
+            border: 4pt outset white;
             border-radius: 10%;
             box-shadow: 0 5px 10px #00000033;
             outline: none;
             font-family: Courier-New, sans-serif;
-            font-size: .3rem;
-            font-weight: 800;
+            font-size: clamp(.25vh, .6rem, 2vh);
+            font-weight: bold;
             line-height: 1;
             color: black;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            flex-direction: column;
             cursor: pointer;
         }
         .intro-container, .question-table-container, .answer-table-container {
@@ -132,22 +155,29 @@
         .i-cell, .q-cell {
             border: 8px solid blue;
         }
-        .i-cell { font-size: 6rem; }
-        .q-cell { font-size: 3rem; }
-        .a-cell { border: 6px solid blue;
-            cursor: pointer;
-            font-size: 1.5rem;
+        .i-cell { font-size: 4.5rem; }
+        .q-cell { font-size: 2.5rem; }
+        .a-cell { font-size:  1rem;
+                 border: 6px solid blue;
+                 cursor: pointer;            
         }
         .i-cell img, .q-cell img, .a-cell img {
             width: 70%;
             height: 70%;
             transition: opacity 0.5s ease-in-out;
         }
-        
-#i-cell {
-    transition: opacity 0.5s ease-in-out;
-}
-        
+
+        /* Fade only the inner content of the intro cell */
+        #introContent {
+            transition: opacity 0.5s ease-in-out;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            /* inherit big font-size from .i-cell */
+            font-size: inherit;
+            line-height: 1;
+        }
+
         .correct { background-color: #92e6a9 !important; }
         .incorrect { background-color: #f69494 !important; }
         .glowing-BlueDiamond {
@@ -159,21 +189,19 @@
 <body>
     <div class="big-table" id="bigTable">
         <div class="grid-container">
-            <div class="grid-section game-title" style="color: blue;">
-                CHECK YOUR<br>MEMORY!
-            </div>
+            <div class="grid-section game-title"><span id="gameTitleText">CHECK YOUR MEMORY!</span></div>
             <div class="grid-section section-2">
                 <div class="score-container">
-                    <div class="score-container-item" id="score-item-1"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-2"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-3"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-4"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-5"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-6"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-7"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-8"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-9"><img src="BlueDiamond.png"></div>
-                    <div class="score-container-item" id="score-item-10"><img src="BlueDiamond.png"></div>
+                    <div class="score-container-item" id="score-item-1"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-2"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-3"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-4"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-5"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-6"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-7"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-8"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-9"><img src="BlueDiamond.png" alt=""></div>
+                    <div class="score-container-item" id="score-item-10"><img src="BlueDiamond.png" alt=""></div>
                 </div>
             </div>
             <div class="grid-section section-3">
@@ -185,7 +213,7 @@
             </div>
             <div class="grid-section section-4">
                 <div class="intro-container" id="intro-container">
-                    <div class="i-cell" id="i-cell">?</div>
+                    <div class="i-cell" id="i-cell"><span id="introContent">?</span></div>
                 </div>
                 <div class="question-table-container hidden" id="question-table-container">
                     <div class="question-table">
@@ -223,7 +251,9 @@
 (() => {
   'use strict';
 
-  const gameTitle = document.querySelector('.game-title');
+  // Elements
+  const gameTitleContainer = document.querySelector('.game-title');
+  const gameTitleText = document.getElementById('gameTitleText');
   const introContainer = document.getElementById('intro-container');
   const questionContainer = document.getElementById('question-table-container');
   const answerContainer = document.getElementById('answer-table-container');
@@ -231,6 +261,7 @@
   const gameOverButton = document.getElementById('gameOverButton');
   const fullScreenButton = document.getElementById('fullScreenButton');
   const introCell = document.getElementById('i-cell');
+  const introContent = document.getElementById('introContent');
 
   const qCells = Array.from(document.querySelectorAll('.q-cell'));
   const aCells = Array.from(document.querySelectorAll('.a-cell'));
@@ -269,11 +300,12 @@
 
   function startIntroSlideshow() {
     stopIntroSlideshow();
-    introCell.textContent = "?";
-    introCell.style.opacity = 1;
+    if (!introContent) return;
+    introContent.textContent = "?";
+    introContent.style.opacity = 1;
 
     introInterval = setInterval(() => {
-      introCell.style.opacity = 0;
+      introContent.style.opacity = 0;
       setTimeout(() => {
         let randomIndex;
         do {
@@ -281,9 +313,9 @@
         } while (randomIndex === lastIntroIndex);
         lastIntroIndex = randomIndex;
 
-        introCell.textContent = gameData[randomIndex].letter;
-        void introCell.offsetWidth; // restart transition
-        introCell.style.opacity = 1;
+        introContent.textContent = gameData[randomIndex].letter;
+        void introContent.offsetWidth; // restart transition
+        introContent.style.opacity = 1;
       }, FADE_DURATION);
     }, CHANGE_INTERVAL);
   }
@@ -312,17 +344,50 @@
     });
   }
 
-  function setTitleSeconds(n) { gameTitle.textContent = `${n} seconds left`; }
+  function setTitleSeconds(n) {
+    if (gameTitleText) {
+      gameTitleText.textContent = `${n} seconds left`;
+      fitTitle();
+    }
+  }
   function stopTimer() { if (timerId) { clearInterval(timerId); timerId = null; } }
   function resetACells() { aCells.forEach(c => c.classList.remove('correct','incorrect')); }
   function clearQCellBackgrounds() { qCells.forEach(c => c.style.backgroundColor = 'white'); }
+
+  // ===== Resize & Title fitting =====
+  function fitTextToOneLine(el) {
+    if (!el || !el.parentElement) return;
+    const parent = el.parentElement;
+    // start with a reasonably large font size based on parent dimensions
+    const parentH = Math.max(12, parent.clientHeight || 24);
+    const parentW = Math.max(20, parent.clientWidth || 40);
+    // reasonable starting px (not huge)
+    let fontSize = Math.floor(Math.min(parentH * 0.8, parentW * 0.2, 200));
+    if (fontSize < 8) fontSize = 8;
+    el.style.fontSize = fontSize + 'px';
+
+    // shrink until fits on one line
+    // allow a tiny padding (4px)
+    const maxWidth = parent.clientWidth - 4;
+    while (el.scrollWidth > maxWidth && fontSize > 8) {
+      fontSize--;
+      el.style.fontSize = fontSize + 'px';
+    }
+  }
+
+  function fitTitle() {
+    fitTextToOneLine(gameTitleText);
+  }
 
   // ===== Game Modes =====
   function showIntro() {
     stopTimer();
     phase = 'intro';
     onlyShow(introContainer);
-    gameTitle.innerHTML = 'CHECK YOUR<br>MEMORY!';
+    if (gameTitleText) {
+      gameTitleText.textContent = 'CHECK YOUR MEMORY!';
+      fitTitle();
+    }
     startIntroSlideshow();
   }
 
@@ -383,14 +448,14 @@
       winCount++;
       if (winCount >= 10) {
         BlueDiamonds.forEach(img => img.classList.add('glowing-BlueDiamond'));
-        gameTitle.textContent = 'YOU ARE THE BEST!';
+        if (gameTitleText) { gameTitleText.textContent = 'YOU ARE THE BEST!'; fitTitle(); }
       } else {
-        gameTitle.textContent = 'You WON!!!';
+        if (gameTitleText) { gameTitleText.textContent = 'You WON!!!'; fitTitle(); }
         const slot = BlueDiamonds[winCount - 1];
         if (slot) slot.classList.add('glowing-BlueDiamond');
       }
     } else {
-      gameTitle.textContent = 'You LOST!';
+      if (gameTitleText) { gameTitleText.textContent = 'You LOST!'; fitTitle(); }
     }
   }
 
@@ -421,6 +486,7 @@
     const vh = window.innerHeight;
     const portraitRatio = 1 / 1.45;
     const bigTable = document.querySelector('.big-table');
+    if (!bigTable) return;
     if (vw / vh < portraitRatio) {
       bigTable.style.width = vw + 'px';
       bigTable.style.height = (vw / portraitRatio) + 'px';
@@ -428,6 +494,9 @@
       bigTable.style.height = vh + 'px';
       bigTable.style.width = (vh * portraitRatio) + 'px';
     }
+
+    // after size changes, make sure title fits
+    fitTitle();
   }
 
   window.addEventListener('resize', resizeBigTable);
