@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Landscape Big Table</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .big-table {
+    box-sizing: border-box;
+    border: 10pt outset orange;
+    background-color: #eee716;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: width 0.3s, height 0.3s;
+  }
+  .button-container {
+    width: 98%;
+    margin: 0 auto 1rem auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 1vw;
+  }
+  .button-container button {
+    width: 25%;
+    font-size: clamp(1rem, 5vw, 2rem);
+    font-family: 'Times', Times, serif;
+    font-weight: 1000;
+    color: white;
+    padding: 0.5em 0;
+    border: 7px outset;
+    border-radius: 25%;
+    border-color: white;
+    background: black;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: background 0.2s;
+  }
+</style>
+</head>
+<body>
+  <div class="big-table">
+    <div class="button-container" id="buttonContainer">
+      <button class="full-screen-button" id="fullScreenButton">FULL<br>SCREEN</button>
+    </div>
+  </div>
+
+  <script>
+    function resizeBigTable() {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      // Desired min/max ratios
+      const minRatio = 1.3;
+      const maxRatio = 1.8;
+
+      // Clamp screen ratio into range
+      let ratio = vw / vh;
+      if (ratio < minRatio) ratio = minRatio;
+      if (ratio > maxRatio) ratio = maxRatio;
+
+      const bigTable = document.querySelector('.big-table');
+
+      // Decide fit strategy
+      if (vw / vh < ratio) {
+        // Too tall, fit width
+        bigTable.style.width = vw + 'px';
+        bigTable.style.height = (vw / ratio) + 'px';
+      } else {
+        // Too wide, fit height
+        bigTable.style.height = vh + 'px';
+        bigTable.style.width = (vh * ratio) + 'px';
+      }
+    }
+
+    window.addEventListener('resize', resizeBigTable);
+    window.addEventListener('DOMContentLoaded', resizeBigTable);
+
+    document.getElementById('fullScreenButton').addEventListener('click', () => {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(err => {
+          alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+        });
+      } else {
+        document.exitFullscreen();
+      }
+    });
+  </script>
+</body>
+</html>
